@@ -1,0 +1,343 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/backend/formvalidation/css/formValidation.css')}}">
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/backend/formvalidation/js/formValidation.js')}}"></script>
+    <script src="{{ asset('bundles/backend/formvalidation/js/framework/bootstrap.js')}}"></script>
+    <script src="{{ asset('bundles/backend/formvalidation/js/language/es_ES.js')}}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+
+            $('form[name="{{ formEntity.vars.name }}"]')
+                .formValidation({
+                    excluded: [':disabled'],
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    locale: 'es_ES',
+                    fields: {
+                        '{{ formEntity.dni.vars.name }}': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'El dni es obligatorio'
+                                }
+                            }
+                        },
+                        '{{ formEntity.name.vars.name }}': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'El nombre del usuario es necesario'
+                                }
+                            }
+                        },
+                        '{{ formEntity.lastName.vars.name }}': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'El apellido es necesario'
+                                }
+                            }
+                        }
+                    }
+                })
+                .on('err.form.fv', function(e) {
+                    var $form          = $(e.target),
+                            fv             = $form.data('formValidation'),
+                            $invalidFields = fv.getInvalidFields();
+
+                    for (var i = 0; i < $invalidFields.length; i++) {
+                        var $field    = $invalidFields.eq(i),
+                                autoFocus = fv.isOptionEnabled($field.attr('data-fv-field'), 'autoFocus');
+
+                        if (autoFocus) {
+                            // Activate the tab containing the field if exists
+                            var $tabPane = $field.parents('.tab-pane'), tabId;
+                            if ($tabPane && (tabId = $tabPane.attr('id'))) {
+                                $('a[href="#' + tabId + '"][data-toggle="tab"]').tab('show');
+                            }
+                            break;
+                        }
+                    }
+                })
+                .on('status.field.fv', function(e, data) {
+                    var validator = data.fv,
+                            $tabPane  = data.element.parents('.tab-pane'),
+                            tabId     = $tabPane.attr('id');
+
+                    if (tabId) {
+                        var $icon = $('a[href="#' + tabId + '"][data-toggle="tab"]').parent().find('i');
+
+                        // Add custom class to tab containing the field
+                        if (data.status == validator.STATUS_INVALID) {
+                            $icon.removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        } else if (data.status == validator.STATUS_VALID) {
+                            $icon.removeClass('glyphicon-ok glyphicon-remove');
+
+                            var isValidTab = validator.isValidContainer($tabPane);
+                            if (isValidTab !== null) {
+                                $icon.addClass(isValidTab ? 'glyphicon-ok' : 'glyphicon-remove');
+                            }
+                        }
+                    }
+                });
+
+        });
+    </script>
+
+{% endblock %}
+
+{% block contenido %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-user"></i> Usuario
+            <small>{{ action }}</small>
+            {% if id is not null %}
+                <button type="button" class="btn btn-primary btn-xs">{{ id }}</button>
+            {% endif %}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <!--<h3 class="box-title">Horizontal Form</h3>-->
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+                        <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#home" class="tab" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Datos iniciales <i class="glyphicon"></i></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#login" class="tab" id="login-tab" role="tab" data-toggle="tab" aria-controls="login">Login <i class="glyphicon"></i></a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#device" class="tab" id="device-tab" role="tab" data-toggle="tab" aria-controls="device">Dispositivo móvil <i class="glyphicon"></i></a>
+                            </li>
+                        </ul>
+
+                        {{ form_start(formEntity, {'attr': {'id': 'user-form'}}) }}
+                        <div id="myTabContent" class="tab-content">
+
+                            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+
+                                <div class="box-body">
+
+                                    {% if formEntity.vars.errors|length > 0 %}
+                                        <div class="info-box bg-red">
+                                            <span class="info-box-icon"><i class="fa fa-fw fa-close"></i></span>
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Error</span>
+                                                <span class="info-box-number">{{ form_errors(formEntity) }}</span>
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="width: 70%"></div>
+                                                </div>
+                                              <span class="progress-description">
+                                                -
+                                              </span>
+                                            </div><!-- /.info-box-content -->
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="form-group {% if formEntity.dni.vars.errors|length > 0 %}has-error{% endif %}">
+                                        {{ form_label(formEntity.dni) }}
+                                        <div class="col-sm-10">
+                                            {% if formEntity.dni.vars.errors|length > 0 %}
+                                                <label class="control-label" for="inputError">
+                                                    <i class="fa fa-times-circle-o"></i> error
+                                                </label>
+                                            {% endif %}
+
+                                            {{ form_widget(formEntity.dni) }}
+
+                                            {% if formEntity.dni.vars.errors|length > 0 %}
+                                                <span class="help-block">{{ form_errors(formEntity.dni) }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.name) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.name) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.lastName) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.lastName) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group {% if formEntity.email.vars.errors|length > 0 %}has-error{% endif %}">
+                                        {{ form_label(formEntity.email) }}
+                                        <div class="col-sm-10">
+                                            {% if formEntity.email.vars.errors|length > 0 %}
+                                                <label class="control-label" for="inputError">
+                                                    <i class="fa fa-times-circle-o"></i> error
+                                                </label>
+                                            {% endif %}
+
+                                            {{ form_widget(formEntity.email) }}
+
+                                            {% if formEntity.email.vars.errors|length > 0 %}
+                                                <span class="help-block">{{ form_errors(formEntity.email) }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group {% if formEntity.phone.vars.errors|length > 0 %}has-error{% endif %}">
+                                        {{ form_label(formEntity.phone) }}
+                                        <div class="col-sm-10">
+                                            {% if formEntity.phone.vars.errors|length > 0 %}
+                                                <label class="control-label" for="inputError">
+                                                    <i class="fa fa-times-circle-o"></i> error
+                                                </label>
+                                            {% endif %}
+
+                                            {{ form_widget(formEntity.phone) }}
+
+                                            {% if formEntity.phone.vars.errors|length > 0 %}
+                                                <span class="help-block">{{ form_errors(formEntity.phone) }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group {% if formEntity.dob.vars.errors|length > 0 %}has-error{% endif %}">
+                                        {{ form_label(formEntity.dob) }}
+                                        <div class="col-sm-10">
+                                            {% if formEntity.dob.vars.errors|length > 0 %}
+                                                <label class="control-label" for="inputError">
+                                                    <i class="fa fa-times-circle-o"></i> error
+                                                </label>
+                                            {% endif %}
+
+                                            {{ form_widget(formEntity.dob) }}
+
+                                            {% if formEntity.dob.vars.errors|length > 0 %}
+                                                <span class="help-block">{{ form_errors(formEntity.dob) }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.profile) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.profile) }}
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.box-body -->
+
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="login" aria-labelledby="login-tab">
+
+                                <div class="box-body">
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.username) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.username) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.password) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.password) }}
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.box-body -->
+
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="device" aria-labelledby="device-tab">
+
+                                <div class="box-body">
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.deviceCode) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.deviceCode) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.deviceOs) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.deviceOs) }}
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.box-body -->
+
+                            </div>
+
+
+                            <div class="box-footer">
+                                {{ form_widget(formEntity.submit) }}
+                            </div><!-- /.box-footer -->
+
+                        </div>
+                        {{ form_end(formEntity)}}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Información</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#"><i class="fa fa-circle-o text-red"></i> Los usuarios.</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Ejemplo</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Ejemplo</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+    </section><!-- /.content -->
+
+
+
+{% endblock %}

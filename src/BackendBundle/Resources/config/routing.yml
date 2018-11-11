@@ -1,0 +1,73 @@
+backend_default:
+    resource:  "@BackendBundle/Resources/config/default/route.yml"
+    prefix: /default
+
+backend_user:
+    resource:  "@BackendBundle/Resources/config/user/route.yml"
+    prefix: /user
+
+backend_session:
+    resource:  "@BackendBundle/Resources/config/session/route.yml"
+    prefix: /session
+
+backend_profile:
+    resource:  "@BackendBundle/Resources/config/profile/route.yml"
+    prefix: /profile
+
+backend_permission:
+    resource:  "@BackendBundle/Resources/config/permission/route.yml"
+    prefix: /permiso
+
+backend_gcm:
+    resource:  "@BackendBundle/Resources/config/gcm/route.yml"
+    prefix: /gcm
+
+backend_qr:
+    resource:  "@BackendBundle/Resources/config/qr/route.yml"
+    prefix: /qr
+
+backend_files:
+    resource:  "@BackendBundle/Resources/config/files/route.yml"
+    prefix: /files
+
+backend_news:
+    resource:  "@BackendBundle/Resources/config/news/route.yml"
+    prefix: /news
+
+backend_video:
+    resource:  "@BackendBundle/Resources/config/video/route.yml"
+    prefix: /video
+
+backend_form:
+    resource:  "@BackendBundle/Resources/config/form/route.yml"
+    prefix: /form
+
+backend_event:
+    resource:  "@BackendBundle/Resources/config/event/route.yml"
+    prefix: /event
+
+backend_element:
+    resource:  "@BackendBundle/Resources/config/element/route.yml"
+    prefix: /element
+
+backend_about:
+    resource:  "@BackendBundle/Resources/config/about/route.yml"
+    prefix: /about
+
+backend_floorplan:
+    resource:  "@BackendBundle/Resources/config/floorplan/route.yml"
+    prefix: /floorplan
+
+backend_eventhasform:
+    resource:  "@BackendBundle/Resources/config/eventhasform/route.yml"
+    prefix: /event-has-form
+
+backend_configuration_email:
+    resource:  "@BackendBundle/Resources/config/configurationemail/route.yml"
+    prefix: /configuration-email
+
+
+#
+#default_document:
+#    resource:  "@BackendBundle/Resources/config/document/route.yml"
+#    prefix: /document

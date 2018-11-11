@@ -1,0 +1,24 @@
+backend_news_index:
+    path: /
+    defaults: { _controller: BackendBundle:News:index }
+    methods: [GET]
+
+backend_news_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:News:list }
+    methods:   [GET]
+
+backend_news_create:
+    path: /create
+    defaults: { _controller: BackendBundle:News:create }
+    methods: [GET, POST]
+
+backend_news_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:News:edit }
+    methods: [GET, POST]
+
+backend_news_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:News:delete }
+    methods:   [GET, POST]

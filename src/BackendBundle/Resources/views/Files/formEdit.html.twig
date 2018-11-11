@@ -1,0 +1,114 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block contenido %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-cubes"></i> Archivo
+            <small>{{ action }}</small>
+            {% if id is not null %}
+                <button type="button" class="btn btn-primary btn-xs">{{ id }}</button>
+            {% endif %}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        {#<h3 class="box-title">Horizontal Form</h3>#}
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    {{ form_start(formEntity)}}
+                    <div class="box-body">
+
+                        {% if formEntity.vars.errors|length > 0 %}
+                            <div class="info-box bg-red">
+                                <span class="info-box-icon"><i class="fa fa-fw fa-close"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Error</span>
+                                    <span class="info-box-number">{{ form_errors(formEntity) }}</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 70%"></div>
+                                    </div>
+                                      <span class="progress-description">
+                                        -
+                                      </span>
+                                </div><!-- /.info-box-content -->
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group {% if formEntity.originalName.vars.errors|length > 0 %}has-error{% endif %}">
+                            {{ form_label(formEntity.originalName) }}
+                            <div class="col-sm-10">
+                                {% if formEntity.originalName.vars.errors|length > 0 %}
+                                    <label class="control-label" for="inputError">
+                                        <i class="fa fa-times-circle-o"></i> error
+                                    </label>
+                                {% endif %}
+
+                                {{ form_widget(formEntity.originalName) }}
+
+                                {% if formEntity.originalName.vars.errors|length > 0 %}
+                                    <span class="help-block">{{ form_errors(formEntity.originalName) }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            {{ form_widget(formEntity.submit) }}
+                        </div><!-- /.box-footer -->
+
+                    </div><!-- /.box-body -->
+                    {{ form_end(formEntity)}}
+
+                </div>
+
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Información</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#"><i class="fa fa-circle-o text-red"></i> Los documentos.</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Ejemplo</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Ejemplo</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+    </section><!-- /.content -->
+{% endblock %}

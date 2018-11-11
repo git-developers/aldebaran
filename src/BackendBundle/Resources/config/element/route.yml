@@ -1,0 +1,49 @@
+backend_element_index:
+    path: /
+    defaults: { _controller: BackendBundle:Element:index }
+    methods: [GET]
+
+backend_element_display_elements_by_form:
+    path: /display-elements-by-form
+    defaults: { _controller: BackendBundle:Element:displayElementsByForm }
+    methods: [GET, POST]
+
+backend_element_display_elements_by_floorplan:
+    path: /display-elements-by-floorplan
+    defaults: { _controller: BackendBundle:Element:displayElementsByFloorplan }
+    methods: [GET, POST]
+
+backend_element_display_form_elements:
+    path: /display-form-elements
+    defaults: { _controller: BackendBundle:Element:displayFormElements }
+    methods: [GET, POST]
+
+backend_element_update_stack_order:
+    path: /update-stack-order
+    defaults: { _controller: BackendBundle:Element:updateStackOrder }
+    methods: [GET, POST]
+
+backend_element_update_position:
+    path: /update-position
+    defaults: { _controller: BackendBundle:Element:updatePosition }
+    methods: [GET, POST]
+
+backend_element_create_and_assign_to_form:
+    path: /create-and-assign-to-form
+    defaults: { _controller: BackendBundle:Element:createAndAssignToForm }
+    methods: [GET, POST]
+
+backend_element_create_and_assign_to_floorplan:
+    path: /create-and-assign-to-floorplan
+    defaults: { _controller: BackendBundle:Element:createAndAssignToFloorplan }
+    methods: [GET, POST]
+
+backend_element_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Element:edit }
+    methods: [GET, POST]
+
+backend_element_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Element:delete }
+    methods:   [GET, POST]

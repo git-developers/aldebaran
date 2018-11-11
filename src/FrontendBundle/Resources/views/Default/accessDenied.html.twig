@@ -1,0 +1,21 @@
+{% extends "FrontendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#<script src="{{ asset('bundles/main/dist/js/pages/dashboard.js')}}"></script>#}
+
+
+{% endblock %}
+
+{% block contenido %}
+
+    <h2 class="underline heading-2" style="color: #474b4d !important;">403 Acceso denegado.</h2>
+    <p class="text-default-variant-1">contacte a su administrador.</p>
+
+{% endblock %}

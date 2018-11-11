@@ -1,0 +1,24 @@
+backend_permission_index:
+    path: /
+    defaults: { _controller: BackendBundle:Permission:index }
+    methods: [GET]
+
+backend_permission_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Permission:list }
+    methods:   [GET]
+
+backend_permission_create:
+    path:  /create
+    defaults: { _controller: BackendBundle:Permission:create }
+    methods:   [GET, POST]
+
+backend_permission_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Permission:edit }
+    methods: [GET, POST]
+
+backend_permission_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Permission:delete }
+    methods:   [GET, POST]

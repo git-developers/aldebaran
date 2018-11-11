@@ -1,0 +1,173 @@
+{% set filesFolderPath = '/' ~ project_folder ~ '/web/uploads/' %}
+{#{% set uploadsFolderPath = app.request.schemeAndHttpHost ~ '/' ~ project_folder ~ '/web/uploads/' %}#}
+
+{% block stylesheets %}
+
+    {#datatables#}
+    <link rel="stylesheet" href="{{ asset('bundles/backend/plugins/datatables/dataTables.bootstrap.css')}}">
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ asset('bundles/backend/plugins/iCheck/all.css')}}">
+
+    <style>
+    .radio-file-item{
+        height: 20px;
+        width: 20px;;
+    }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {#datatables#}
+    <script src="{{ asset('bundles/backend/plugins/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{ asset('bundles/backend/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+
+            $(document).on('click', '.radio-file-item', function(e) {
+                var value = $(this).val();
+
+                $('#radio-value').val(value);
+            });
+
+            function icon(type, path) {
+
+                var icon = '';
+
+                switch (type){
+                    case 'pdf':
+                        icon = '<i class="fa fa-fw fa-2x fa-file-pdf-o"></i>';
+                        break;
+                    case 'ppt':
+                        icon = '<i class="fa fa-fw fa-2x fa-file-powerpoint-o"></i>';
+                        break;
+                    case 'word':
+                        icon = '<i class="fa fa-fw fa-2x fa-file-word-o"></i>';
+                        break;
+                    case 'excel':
+                        icon = '<i class="fa fa-fw fa-2x fa-file-excel-o"></i>';
+                        break;
+                    default:
+                        icon = '<img src="{{ filesFolderPath }}'+ path +'" class="img-thumbnail" height="80">';
+                        break;
+                }
+
+                return icon;
+            }
+
+            function humanFileSize(bytes, si) {
+                var thresh = si ? 1000 : 1024;
+                if(Math.abs(bytes) < thresh) {
+                    return bytes + ' B';
+                }
+
+                var units = si
+                        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+                        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+                var u = -1;
+
+                do {
+                    bytes /= thresh;
+                    ++u;
+                } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+
+                return bytes.toFixed(1)+' '+units[u];
+            }
+
+            var table = $('#table-json').DataTable({
+                "bPaginate": true,
+                "bSort": false,
+                "lengthMenu": [[4, 10, 20, -1], [4, 10, 20, "Todos"]],
+                "data": {{ entitiesJson | raw }},
+                "language": {
+                          "emptyTable": "No hay datos disponibles en la tabla"
+                },
+                "columns": [
+                    {
+                        "data": function (obj) {
+                            if(obj.original_name != null) {
+                                return '<input type="radio" name="radio-file-item" class="radio-file-item" value="' + obj.id_increment + '#' + obj.original_name +'" >';
+                                //return '<label class=""><div class="iradio_flat-green" aria-checked="" aria-disabled="false" style="position: relative;"><input type="radio" name="r3" class="flat-red" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div></label>';
+                            }
+                        }
+                    },
+                    {
+                        "data": function (obj) {
+                            return '<span class="label label-default">' + obj.id_increment + '</span>';
+                        }
+                    },
+                    {
+                        "data": function (obj) {
+                            if(obj.original_name != null){
+                                return '<span class="label label-default">'+obj.original_name+'</span>';
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "data": function (obj) {
+                            if(obj.size != null){
+                                return humanFileSize(obj.size, true);
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "data": function (obj) {
+                            if(obj.files_mime_type != null){
+                                return '<span class="label label-info">'+obj.files_mime_type.type+'</span>';
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "data": function (obj) {
+                            if(obj.files_mime_type != null && obj.path != null){
+                                return icon(obj.files_mime_type.type, obj.path);
+                            }
+                            return "";
+                        }
+                    },
+                    {
+                        "data": function (obj) {
+                            if(obj.created != null){
+                                return obj.created;
+                            }
+                            return "";
+                        }
+                    }
+                ],
+                "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    $(nRow).attr("id","id_increment_" + aData.id_increment);
+                    return nRow;
+                }
+            });
+
+        });
+    </script>
+
+{% endblock %}
+
+{% block contenido %}
+
+    <input type="hidden" value="" id="radio-value" />
+
+    <table id="table-json" class="table table-bordered dataTable" role="grid" aria-describedby="example1_info">
+        <thead>
+        <tr>
+            <th>-</th>
+            <th>#</th>
+            <th>nombre</th>
+            <th>size</th>
+            <th>tipo</th>
+            <th>archivo</th>
+            <th>creado</th>
+        </tr>
+        </thead>
+
+    </table>
+
+{% endblock %}

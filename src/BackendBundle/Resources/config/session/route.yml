@@ -1,0 +1,9 @@
+backend_session_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Session:list }
+    methods:   [GET]
+
+backend_session_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Session:delete }
+    methods:   [GET, POST]

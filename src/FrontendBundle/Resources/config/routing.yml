@@ -1,0 +1,7 @@
+frontend_default:
+    resource:  "@FrontendBundle/Resources/config/default/route.yml"
+    prefix: /default
+
+frontend_video:
+    resource:  "@FrontendBundle/Resources/config/video/route.yml"
+    prefix: /video

@@ -1,0 +1,249 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% set duration = (formEntity.youtubeDuration.vars.value is not empty) ? formEntity.youtubeDuration.vars.value : '-' %}
+{% set youtube = (formEntity.youtubeThumbnail.vars.value is not empty) ? formEntity.youtubeThumbnail.vars.value : 'bundles/backend/images/youtube.png' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        //https://www.googleapis.com/youtube/v3/videos?id=8HgxLirp2kA&key=AIzaSyBVJh-LaTONXYoDdrabohoKnszoVl54xqM&part=snippet,contentDetails,statistics,status
+        $('#{{ formEntity.youtubeUrl.vars.id }}').keyup(function(event) {
+            event.preventDefault();
+
+            $thumbnail = $('#thumbnail');
+            $('.youtube-api').val('').html('');//borrar los inputs
+            $youtubeUrl = $(this).val();
+            $youtubeId = youtube_parser($youtubeUrl);
+
+            $url = 'https://www.googleapis.com/youtube/v3/videos?id=' + $youtubeId + '&key={{ google_api_key }}&part=snippet,contentDetails,statistics,status';
+
+            $.getJSON($url,
+                function (response) {
+
+                    /*
+                    $.each(response.items[0].snippet, function (key, value) {
+                        //console.log(key + "::: " + value);
+                    });
+                    */
+
+                    if(response.items.length >= 1) {
+                        var duration = getTime(durationToSeconds(response.items[0].contentDetails.duration));
+                        var thumbnail = response.items[0].snippet.thumbnails.medium.url;
+                        $('#{{ formEntity.youtubeDuration.vars.id }}').val(duration);
+                        $('#youtube-duracion').html(duration);
+                        $('#{{ formEntity.youtubeThumbnail.vars.id }}').val(thumbnail);
+                        $('#{{ formEntity.youtubeId.vars.id }}').val($youtubeId);
+                        $('#{{ formEntity.title.vars.id }}').val(response.items[0].snippet.title);
+                        $('#{{ formEntity.body.vars.id }}').val(response.items[0].snippet.description);
+                        $('#youtube-visto').html(response.items[0].statistics.viewCount);
+                        $('#youtube-like').html(response.items[0].statistics.likeCount);
+                        $thumbnail.attr('src', thumbnail);
+                    }else{
+                        $thumbnail.attr('src', '{{ asset(youtube)}}');
+                    }
+            });
+
+        });
+
+        function youtube_parser(url) {
+            var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+            var match = url.match(regExp);
+            return (match && match[7].length == 11) ? match[7] : false;
+        }
+
+        function durationToSeconds(duration) {
+            var match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)
+
+            var hours = (parseInt(match[1]) || 0);
+            var minutes = (parseInt(match[2]) || 0);
+            var seconds = (parseInt(match[3]) || 0);
+
+            return hours * 3600 + minutes * 60 + seconds;
+        }
+
+        function getTime(sec_num) {
+
+            var hours = Math.floor(sec_num / 3600);
+            var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+            if (hours < 10) { hours = "0" + hours; }
+            if (minutes < 10) { minutes = "0" + minutes; }
+            if (seconds < 10) { seconds = "0" + seconds; }
+            var time = hours + ':' + minutes + ':' + seconds;
+            return time;
+        }
+
+    </script>
+
+{% endblock %}
+
+{% block contenido %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-play-circle"></i> Video youtube
+            <small>{{ action }}</small>
+            {% if id is not null %}
+                <button type="button" class="btn btn-primary btn-xs">{{ id }}</button>
+            {% endif %}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-9">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        {#<h3 class="box-title">Horizontal Form</h3>#}
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    {{ form_start(formEntity)}}
+                    <div class="box-body">
+
+                        {% if formEntity.vars.errors|length > 0 %}
+                            <div class="info-box bg-red">
+                                <span class="info-box-icon"><i class="fa fa-fw fa-close"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Error</span>
+                                    <span class="info-box-number">{{ form_errors(formEntity) }}</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 70%"></div>
+                                    </div>
+                                      <span class="progress-description">
+                                        -
+                                      </span>
+                                </div><!-- /.info-box-content -->
+                            </div>
+                        {% endif %}
+
+                        <div class="row">
+
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    {{ form_label(formEntity.youtubeUrl) }}
+                                    <div class="col-sm-11">
+                                        {{ form_widget(formEntity.youtubeUrl) }}
+                                    </div>
+
+                                    <p>&nbsp;</p>
+
+                                    <div class="box box-primary ">
+                                        <div class="box-body box-profile  ">
+                                            <img id="thumbnail" class="profile-user-img img-responsive" style="width: 250px !important; height: 150px !important;" src="{{ asset(youtube)}}" >
+
+                                            {#
+                                            <h3 class="profile-username text-center">Nina Mcintire</h3>
+                                            <p class="text-muted text-center">Software Engineer</p>
+                                            #}
+                                            <p>&nbsp;</p>
+                                            <ul class="list-group list-group-unbordered ">
+                                                <li class="list-group-item">
+                                                    <b>Duración</b> <a class="pull-right youtube-api" id="youtube-duracion">{{ duration }}</a>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <b>Visto</b> <a class="pull-right youtube-api" id="youtube-visto">-</a>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <b>Like</b> <a class="pull-right youtube-api" id="youtube-like">-</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-7">
+                                <div class="form-group {% if formEntity.title.vars.errors|length > 0 %}has-error{% endif %}">
+                                    {{ form_label(formEntity.title) }}
+                                    <div class="col-sm-10">
+                                        {% if formEntity.title.vars.errors|length > 0 %}
+                                            <label class="control-label" for="inputError">
+                                                <i class="fa fa-times-circle-o"></i> error
+                                            </label>
+                                        {% endif %}
+
+                                        {{ form_widget(formEntity.title) }}
+
+                                        {% if formEntity.title.vars.errors|length > 0 %}
+                                            <span class="help-block">{{ form_errors(formEntity.title) }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(formEntity.body) }}
+                                    <div class="col-sm-10">
+                                        {{ form_widget(formEntity.body) }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form_label(formEntity.access) }}
+                                    <div class="col-sm-10">
+                                        {{ form_widget(formEntity.access) }}
+                                    </div>
+                                </div>
+
+                                <div class="box-footer">
+                                    {{ form_widget(formEntity.submit) }}
+                                </div><!-- /.box-footer -->
+                            </div>
+
+                        </div>
+
+                        {{ form_widget(formEntity.youtubeThumbnail) }}
+                        {{ form_widget(formEntity.youtubeDuration) }}
+                        {{ form_widget(formEntity.youtubeId) }}
+
+                    </div><!-- /.box-body -->
+                    {{ form_end(formEntity)}}
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Información</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#"><i class="fa fa-circle-o text-red"></i> Los usuarios.</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Ejemplo</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Ejemplo</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+    </section><!-- /.content -->
+
+
+{% endblock %}

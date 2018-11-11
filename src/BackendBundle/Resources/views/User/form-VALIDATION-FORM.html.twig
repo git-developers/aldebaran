@@ -1,0 +1,458 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/backend/formvalidation/css/formValidation.css')}}">
+    <script src="{{ asset('bundles/backend/formvalidation/js/formValidation.js')}}"></script>
+    <script src="{{ asset('bundles/backend/formvalidation/js/language/es_ES.js')}}"></script>
+
+    <script src="{{ asset('bundles/backend/formvalidation/js/framework/bootstrap.js')}}"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#accountForm')
+                    .formValidation({
+                        excluded: [':disabled'],
+                        icon: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            fullName: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'The full name is required'
+                                    }
+                                }
+                            },
+                            company: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'The company name is required'
+                                    }
+                                }
+                            },
+                            jobTitle: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'The company name is required'
+                                    }
+                                }
+                            },
+                            'email[]': {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'The email address is required'
+                                    },
+                                    emailAddress: {
+                                        message: 'The email address is not valid'
+                                    }
+                                }
+                            },
+                            address: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'The address is required'
+                                    }
+                                }
+                            },
+                            city: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'The city is required'
+                                    }
+                                }
+                            },
+                            country: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'The city is required'
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    .on('err.form.fv', function(e) {
+                        var $form          = $(e.target),
+                                fv             = $form.data('formValidation'),
+                                $invalidFields = fv.getInvalidFields();
+
+                        for (var i = 0; i < $invalidFields.length; i++) {
+                            var $field    = $invalidFields.eq(i),
+                                    autoFocus = fv.isOptionEnabled($field.attr('data-fv-field'), 'autoFocus');
+
+                            if (autoFocus) {
+                                // Activate the tab containing the field if exists
+                                var $tabPane = $field.parents('.tab-pane'), tabId;
+                                if ($tabPane && (tabId = $tabPane.attr('id'))) {
+                                    $('a[href="#' + tabId + '"][data-toggle="tab"]').tab('show');
+                                }
+                                break;
+                            }
+                        }
+                    })
+                    .on('status.field.fv', function(e, data) {
+                        var validator = data.fv,
+                                $tabPane  = data.element.parents('.tab-pane'),
+                                tabId     = $tabPane.attr('id');
+
+                        if (tabId) {
+                            var $icon = $('a[href="#' + tabId + '"][data-toggle="tab"]').parent().find('i');
+
+                            // Add custom class to tab containing the field
+                            if (data.status == validator.STATUS_INVALID) {
+                                $icon.removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                            } else if (data.status == validator.STATUS_VALID) {
+                                $icon.removeClass('glyphicon-ok glyphicon-remove');
+
+                                var isValidTab = validator.isValidContainer($tabPane);
+                                if (isValidTab !== null) {
+                                    $icon.addClass(isValidTab ? 'glyphicon-ok' : 'glyphicon-remove');
+                                }
+                            }
+                        }
+                    });
+
+            $('.addButton').on('click', function() {
+                var $template = $('#emailTemplate'),
+                        $row      = $template.clone().removeAttr('id').insertAfter('#emailRow').removeClass('hide'),
+                        $el       = $row.find('input').eq(0);
+                $('#accountForm').formValidation('addField', $el);
+
+                $row.on('click', '.removeButton', function(e) {
+                    $('#accountForm').formValidation('removeField', $el);
+                    $row.remove();
+                });
+            });
+        });
+    </script>
+
+
+
+
+{% endblock %}
+
+{% block contenido %}
+
+
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+
+
+
+                <div class="page-header">
+                    <h2>Tab example</h2>
+                </div>
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#info-tab" data-toggle="tab">Information <i class="glyphicon"></i></a></li>
+                    <li><a href="#address-tab" data-toggle="tab">Address <i class="glyphicon"></i></a></li>
+                </ul>
+
+                <form id="accountForm" method="post" class="form-horizontal" action="target.php" style="margin-top: 20px;">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="info-tab">
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">Full name</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control" name="fullName" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">Company</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control" name="company" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">Job title</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control" name="jobTitle" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="emailRow">
+                                <label class="col-xs-3 control-label">Email</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control" name="email[]" />
+                                </div>
+                                <div class="col-xs-4">
+                                    <button type="button" class="btn btn-default btn-sm addButton">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="address-tab">
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">Address</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control" name="address" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">City</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control" name="city" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-3 control-label">Country</label>
+                                <div class="col-xs-5">
+                                    <select class="form-control" name="country">
+                                        <option value="">Select a country</option>
+                                        <option value="FR">France</option>
+                                        <option value="DE">Germany</option>
+                                        <option value="IT">Italy</option>
+                                        <option value="JP">Japan</option>
+                                        <option value="RU">Russian</option>
+                                        <option value="US">United State</option>
+                                        <option value="GB">United Kingdom</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-5 col-xs-offset-3">
+                            <button type="submit" class="btn btn-primary">Validate</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <div class="form-group hide" id="emailTemplate">
+        <div class="col-xs-offset-3 col-xs-5">
+            <input class="form-control" type="text" name="email[]" />
+        </div>
+        <div class="col-xs-4">
+            <button type="button" class="btn btn-default btn-sm removeButton">Remove</button>
+        </div>
+    </div>
+
+
+
+
+
+    {#
+
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-user"></i> Usuario
+            <small>{{ action }}</small>
+            {% if id is not null %}
+                <button type="button" class="btn btn-primary btn-xs">{{ id }}</button>
+            {% endif %}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <!--<h3 class="box-title">Horizontal Form</h3>-->
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="bs-example bs-example-tabs" data-example-id="togglable-tabs">
+                        <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#home" class="tab" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Datos iniciales</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#login" class="tab" id="login-tab" role="tab" data-toggle="tab" aria-controls="login">Login</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#device" class="tab" id="device-tab" role="tab" data-toggle="tab" aria-controls="device">Dispositivo móvil</a>
+                            </li>
+                        </ul>
+
+                        {{ form_start(formEntity, {'attr': {'id': 'user-form'}}) }}
+                        <div id="myTabContent" class="tab-content">
+
+                            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+
+                                <div class="box-body">
+
+                                    {% if formEntity.vars.errors|length > 0 %}
+                                        <div class="info-box bg-red">
+                                            <span class="info-box-icon"><i class="fa fa-fw fa-close"></i></span>
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Error</span>
+                                                <span class="info-box-number">{{ form_errors(formEntity) }}</span>
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="width: 70%"></div>
+                                                </div>
+                                              <span class="progress-description">
+                                                -
+                                              </span>
+                                            </div><!-- /.info-box-content -->
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="form-group {% if formEntity.dni.vars.errors|length > 0 %}has-error{% endif %}">
+                                        {{ form_label(formEntity.dni) }}
+                                        <div class="col-sm-10">
+                                            {% if formEntity.dni.vars.errors|length > 0 %}
+                                                <label class="control-label" for="inputError">
+                                                    <i class="fa fa-times-circle-o"></i> error
+                                                </label>
+                                            {% endif %}
+
+                                            {{ form_widget(formEntity.dni) }}
+
+                                            {% if formEntity.dni.vars.errors|length > 0 %}
+                                                <span class="help-block">{{ form_errors(formEntity.dni) }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.name) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.name) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.lastName) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.lastName) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        {{ form_label(formEntity.email) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.email) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.profile) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.profile) }}
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.box-body -->
+
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="login" aria-labelledby="login-tab">
+
+                                <div class="box-body">
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.username) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.username) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.password) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.password) }}
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.box-body -->
+
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane fade" id="device" aria-labelledby="device-tab">
+
+                                <div class="box-body">
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.deviceCode) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.deviceCode) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        {{ form_label(formEntity.deviceOs) }}
+                                        <div class="col-sm-10">
+                                            {{ form_widget(formEntity.deviceOs) }}
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.box-body -->
+
+                            </div>
+
+
+                            <div class="box-footer">
+                                {{ form_widget(formEntity.submit) }}
+                                <button type="button" id="pollo" name="" class="btn btn-info pull-right">Guardar 3</button>
+                            </div><!-- /.box-footer -->
+
+                        </div>
+                        {{ form_end(formEntity)}}
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Información</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#"><i class="fa fa-circle-o text-red"></i> Los usuarios.</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Ejemplo</a></li>
+                            <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Ejemplo</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div><!-- /.row -->
+
+    </section><!-- /.content -->
+
+    #}
+
+
+{% endblock %}

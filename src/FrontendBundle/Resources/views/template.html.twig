@@ -1,0 +1,208 @@
+{# http://livedemo00.template-help.com/opencart_49048 #}
+{% set homeUrl = app.request.schemeAndHttpHost ~ '/' ~ project_folder ~ '/web/app_dev.php/frontend/default/' %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+
+    <base href="http://livedemo00.template-help.com/wt_51219/">
+
+
+    <title>{{ project_name }}</title>
+    {#<link href="{{ asset('bundles/frontend/images/favicon.png')}}" rel="icon"/>#}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="{{ project_description }}">
+    <meta name="keywords" content="Your keywords">
+    <meta name="author" content="Your name">
+    <meta name = "format-detection" content = "telephone=no" />
+
+    <!--CSS-->
+    <link rel="stylesheet" href="css/bootstrap.css" >
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/touchTouch.css">
+    <link rel="stylesheet" href="fonts/font-awesome.css">
+
+    <!--JS-->
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/superfish.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.mobilemenu.js"></script>
+    <script src="js/jquery.equalheights.js"></script>
+    <script src="js/jquery.carouFredSel-6.1.0-packed.js"></script>
+    <script src="js/jquery.mousewheel.min.js"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+
+    <script src="js/touchTouch.jquery.js"></script>
+    <script>
+        $(window).load(function() {
+            // Initialize the gallery
+            $('.foo figure a').touchTouch();
+        });
+    </script>
+    <script>
+        $(window).load(function() {
+            $(function() {
+                $('#foo1').carouFredSel({
+                    auto: false,
+                    responsive: true,
+                    width: '100%',
+                    scroll: 1,
+                    prev: '#prev1',
+                    next: '#next1',
+                    items: {
+                        height: 'auto',
+                        width:225,
+                        visible: {
+                            min: 1,
+                            max: 1
+                        }
+                    },
+                    mousewheel: true,
+                    swipe: {
+                        onMouse: true,
+                        onTouch: true
+                    }
+                });
+                $('.foo').carouFredSel({
+                    auto: false,
+                    responsive: true,
+                    width: '100%',
+                    scroll: 1,
+                    prev: '#prev2',
+                    next: '#next2',
+                    items: {
+                        height: 'auto',
+                        width:280,
+                        visible: {
+                            min: 1,
+                            max: 3
+                        }
+                    },
+                    mousewheel: true,
+                    swipe: {
+                        onMouse: true,
+                        onTouch: true
+                    }
+                });
+            });
+        });
+    </script>
+    <!--[if lt IE 9]>
+    <div style='text-align:center'><a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div>
+    <![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+
+    {% block stylesheets %}
+
+        {#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/frontend/bootstrap/css/bootstrap.css')}}"/>#}
+
+    {% endblock %}
+
+
+    {% block javascripts %}
+
+        {#<script type="text/javascript" src="{{ asset('bundles/frontend/js/jquery-1.10.2.min.js')}}"></script>#}
+
+    {% endblock %}
+
+</head>
+
+<body >
+
+<div class="global">
+    <header class="clearfix indent">
+        <div class="content-box1"></div>
+        <div class="content-box2">
+            <div class="right-side">
+                <em></em>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-12 col-sm-12">
+                            <div class="wrap">
+                                <nav class="navbar navbar-default navbar-static-top tm_navbar clearfix" role="navigation">
+                                    <ul class="nav sf-menu clearfix">
+                                        <li class="active"><a href="index.html">Inicio</a><i></i></li>
+                                        <li><a href="index-1.html">Nosotros</a><i></i></li>
+                                        <li class="sub-menu"><a href="index-2.html">Menu</a><span></span><i></i>
+                                            <ul class="submenu">
+                                                <li><a href="#">Columns 01</a></li>
+                                                <li><a href="#">Columns 02</a></li>
+                                                <li><a href="#">Columns 03</a><span></span>
+                                                    <ul class="submenu">
+                                                        <li><a href="#">Columns 04</a></li>
+                                                        <li><a href="#">Columns 05</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="{{ absolute_url(path('backend_default_index')) }}">Backend</a><i></i></li>
+                                        <li><a href="index-4.html">Contacto</a></li>
+                                    </ul>
+                                </nav>
+                                <h1 class="navbar-brand navbar-brand_"><a href="#">
+                                        {#<img src="img/logo.png" alt="logo">#}
+                                        Aldebaran
+                                    </a></h1>
+                                <div class="info-box">
+                                    <p>Lima Peru,<br>Ave. Olguin,<br>Lima, Peru<br>E-MAIL: <a href="#">mail@aldebaran.com</a></p>
+                                    <p class="tel">(800) <span>123 1234</span></p>
+                                </div>
+                                <div class="info-box indent">
+                                    <p>MON - FRI 7AM - 11AM <span>(BREAKFAST)</span><br>MON - FRI 11AM - 8PM <span>(LUNCH)</span><br>SAT 8AM - 12PM <span>(BREAKFAST)</span><br>SAT 12PM - 4PM <span>(LUNCH)</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% block contenido %}
+
+    {% endblock %}
+
+
+
+
+
+
+
+
+
+    <!--footer-->
+    <footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-md-6 col-sm-6">
+                <a href="#" class="lnk">{{ project_name }} &copy; <br> {{ "now" | date('Y') }}<i></i></a>
+            </div>
+            <div class="col-lg-7 col-md-6 col-sm-6">
+                <div>
+                    <figure><img src="img/foo_logo.png" alt=""><p>&copy; <em id="copyright-year"></em><br> <a href="index-5.html">Privacy policy</a></p></figure>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box"><em></em></div>
+    <!-- {# FOOTER_LINK #} -->
+    </footer>
+
+
+
+<script src="js/bootstrap.min.js"></script>
+<script src="js/tm-scripts.js"></script>
+
+
+</body>
+
+</html>

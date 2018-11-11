@@ -1,0 +1,75 @@
+<style>
+    .alert-info {
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+    table {
+        background-color: transparent;
+    }
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+</style>
+
+<div class="alert alert-info" role="alert"
+     style="
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        color: #31708f;
+        background-color: #d9edf7;
+        border-color: #bce8f1;
+        width: 60%;
+        max-width: 60%;
+     ">
+    <strong>Se creo un documento importante</strong>
+</div>
+
+<table border="1" class="table table-bordered"
+       style="
+            border: 1px solid #ddd;
+            width: 55%;
+            max-width: 55%;
+            margin-bottom: 20px;
+            background-color: transparent;
+            border-spacing: 0;
+            border-collapse: collapse;
+       ">
+    <thead style="">
+        <tr>
+            <th style="background-color: #dff0d8; padding: 15px;">Creado por</th>
+            <th style="background-color: #dff0d8; padding: 15px;">Titulo</th>
+            <th style="background-color: #dff0d8; padding: 15px;">Cuerpo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th align="center" style="padding: 10px;">{{ post.user.name }} {{ post.user.lastName }}</th>
+            <td align="center" style="padding: 10px;">{{ post.title }}</td>
+            <td align="center" style="padding: 10px;">{{ post.body }}</td>
+        </tr>
+    </tbody>
+</table>
+
+{# Makes an absolute URL to the /images/logo.png file #}
+{#<img src="{{ absolute_url(asset('bundles/main/dist/img/user2-160x160.jpg')) }}">#}

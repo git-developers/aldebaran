@@ -1,0 +1,24 @@
+backend_qr_index:
+    path: /
+    defaults: { _controller: BackendBundle:Qr:index }
+    methods: [GET]
+
+backend_qr_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Qr:list }
+    methods:   [GET]
+
+backend_qr_create:
+    path:  /create
+    defaults: { _controller: BackendBundle:Qr:create }
+    methods:   [GET, POST]
+
+backend_qr_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Qr:edit }
+    methods: [GET, POST]
+
+backend_qr_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Qr:delete }
+    methods:   [GET, POST]

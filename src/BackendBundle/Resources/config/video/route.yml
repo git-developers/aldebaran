@@ -1,0 +1,24 @@
+backend_video_index:
+    path: /
+    defaults: { _controller: BackendBundle:Video:index }
+    methods: [GET]
+
+backend_video_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Video:list }
+    methods:   [GET]
+
+backend_video_create:
+    path: /create
+    defaults: { _controller: BackendBundle:Video:create }
+    methods: [GET, POST]
+
+backend_video_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Video:edit }
+    methods: [GET, POST]
+
+backend_video_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Video:delete }
+    methods:   [GET, POST]

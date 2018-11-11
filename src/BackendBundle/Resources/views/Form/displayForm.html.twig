@@ -1,0 +1,21 @@
+<div class="box box-primary box-solid div-form div-form-{{ form.idIncrement }}" data-id="{{ form.idIncrement }}">
+    <div class="box-header with-border">
+        <h3 class="box-title">
+            <button type="button" class="btn bg-light-blue-active btn-xs">{{ form.idIncrement }}</button> <i class="fa fa-fw fa-file-text"></i> {{ form.title }}
+        </h3>
+        <div class="box-tools pull-right">
+            <button type="button" data-id="{{ form.idIncrement }}" class="btn btn-box-tool delete" > {# data-widget="remove" #}
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        {% for element in elementFactories %}
+            {{ include("BackendBundle:Element:displayFormElementToolsMinus.html.twig") }}
+        {% endfor %}
+    </div>
+    <input type="hidden" name="event[event_form][]" value="{{ form.idIncrement }}">
+</div>
+
+
+

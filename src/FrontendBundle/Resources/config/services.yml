@@ -1,0 +1,8 @@
+#    default.example:
+#        class: BackendBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+services:
+    main.util.gcm_service:
+        class: MainBundle\Util\GcmService
+        arguments: ["@service_container"]

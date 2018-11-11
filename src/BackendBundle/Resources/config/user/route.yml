@@ -1,0 +1,29 @@
+backend_user_index:
+    path: /
+    defaults: { _controller: BackendBundle:User:index }
+    methods: [GET]
+
+backend_user_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:User:list }
+    methods:   [GET]
+
+backend_user_create:
+    path: /create
+    defaults: { _controller: BackendBundle:User:create }
+    methods: [GET, POST]
+
+backend_user_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:User:edit }
+    methods: [GET, POST]
+
+backend_user_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:User:delete }
+    methods:   [GET, POST]
+
+backend_user_favourite:
+    path:  /favorito
+    defaults: { _controller: BackendBundle:User:favourite }
+    methods:   [GET, POST]

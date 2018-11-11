@@ -1,0 +1,71 @@
+{% extends "FrontendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#<script src="{{ asset('bundles/main/dist/js/pages/dashboard.js')}}"></script>#}
+
+{% endblock %}
+
+{% block contenido %}
+
+    <section class="margin-top-30">
+        <div class="container">
+            <h2 class="underline">Videos</h2>
+        </div>
+    </section>
+
+    {% for video in videos %}
+
+        {% set i = loop.index %}
+
+        <section class="well-lg bg-default-variant-4">
+
+            <div class="container">
+                <div class="row">
+
+                    {% if i is even %}
+                        <div class="col-sm-9 col-md-offset-1 col-md-8">
+                            <a href="{{ path('frontend_video_detail') }}?id={{ video.idIncrement }}">
+                                <h2 class="underline">{{ video.title | raw }}</h2>
+                            </a>
+                            <p>{{ video.body | raw }}</p>
+                        </div>
+                    {% else %}
+                        <div class="col-sm-3 text-center-1">
+                            <a href="{{ path('frontend_video_detail') }}?id={{ video.idIncrement }}">
+                                <img class="img-round" src="{{ video.youtubeThumbnail }}" alt="">
+                                {#<div class="icon-round">#}
+                                    {#<img class="img-round" src="" >#}
+                                {#</div>#}
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if i is even %}
+                        <div class="col-sm-3 text-center-1">
+                            <a href="{{ path('frontend_video_detail') }}?id={{ video.idIncrement }}">
+                                <img class="img-round" src="{{ video.youtubeThumbnail }}" alt="">
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="col-sm-9 col-md-offset-1 col-md-8">
+                            <a href="{{ path('frontend_video_detail') }}?id={{ video.idIncrement }}">
+                                <h2 class="underline">{{ video.title | raw }}</h2>
+                            </a>
+                            <p>{{ video.body | raw }}</p>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </section>
+
+    {% endfor %}
+
+{% endblock %}

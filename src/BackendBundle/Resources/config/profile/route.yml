@@ -1,0 +1,24 @@
+backend_profile_index:
+    path: /
+    defaults: { _controller: BackendBundle:Profile:index }
+    methods: [GET]
+
+backend_profile_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Profile:list }
+    methods:   [GET]
+
+backend_profile_create:
+    path:  /create
+    defaults: { _controller: BackendBundle:Profile:create }
+    methods:   [GET, POST]
+
+backend_profile_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Profile:edit }
+    methods: [GET, POST]
+
+backend_profile_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Profile:delete }
+    methods:   [GET, POST]

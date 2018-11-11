@@ -1,0 +1,5 @@
+api_default_index:
+    path: /
+    defaults: { _controller: ApiBundle:Default:index }
+    methods: [GET]
+

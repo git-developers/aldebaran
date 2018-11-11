@@ -1,0 +1,24 @@
+api_user_login:
+    path:  /login
+    defaults: { _controller: ApiBundle:User:login }
+    methods:   [GET, POST]
+
+api_user_logout:
+    path:  /logout
+    defaults: { _controller: ApiBundle:User:logout }
+    methods:   [GET, POST]
+
+api_user_create:
+    path:  /create
+    defaults: { _controller: ApiBundle:User:create }
+    methods:   [GET, POST]
+
+api_user_update:
+    path:  /update
+    defaults: { _controller: ApiBundle:User:update }
+    methods:   [GET, POST]
+
+api_user_test:
+    path:  /test
+    defaults: { _controller: ApiBundle:User:test }
+    methods:   [GET, POST]

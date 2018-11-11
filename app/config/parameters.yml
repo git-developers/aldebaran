@@ -1,0 +1,22 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: aldebaran_db
+    database_user: root
+    database_password: toor
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
+    mailer_user: tianosweb@gmail.com
+    mailer_password: xxxx
+    google_api_key: AIzaSyDE3Iz_lQcLukpL0KgjpmjSiZae7m03Zj0
+    project_folder: 'aldebaran'
+    secret: ad180a8a2e35f67cdc450e5a16b90da019165bfa
+twig:
+    globals:
+        version: 1.0.1
+        google_api_key: AIzaSyDE3Iz_lQcLukpL0KgjpmjSiZae7m03Zj0
+        project_name: 'USMP'
+        project_folder: 'aldebaran'
+        project_description: 'Aldebaran sistema'
+        parameter_igv: 18

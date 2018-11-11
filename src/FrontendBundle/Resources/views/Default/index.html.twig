@@ -1,0 +1,269 @@
+{% extends "FrontendBundle::template.html.twig" %}
+
+{% set filesFolderPath = '/' ~ project_folder ~ '/web/uploads/' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#<script src="{{ asset('bundles/main/dist/js/pages/dashboard.js')}}"></script>#}
+
+{% endblock %}
+
+{% block contenido %}
+
+<!--content-->
+<div class="qwerty">
+    <div class="container">
+        <div class="box"><em></em></div>
+        <div class="col-lg-5 col-md-12 col-sm-12 left-box">
+            <h2><span>Estamos comprometidos a sus alimentos y bebidas innovadoras</span></h2>
+            <div class="list_carousel1 responsive clearfix">
+                <ul id="foo1">
+                    <li>
+                        <div>
+                            <figure><img src="img/page1_icon1.png" alt=""></figure>
+                            <div class="extra-wrap">
+                                <p class="title">Lobsters</p>
+                                <ul class="list3">
+                                    <li><a href="#">-   Praesent vestibulum aenean nonummy</a></li>
+                                    <li><a href="#">-   Hendrerit mauris  cum sociis natoque </a></li>
+                                    <li><a href="#">-   Enatibus et magnis arturient montes </a></li>
+                                    <li><a href="#">-   Ascetur ridiculus mus nulla dui</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <figure><img src="img/page1_icon2.png" alt=""></figure>
+                            <div class="extra-wrap">
+                                <p class="title">shrimps</p>
+                                <div class="extra-wrap">
+                                    <ul class="list3">
+                                        <li><a href="#">-   Praesent vestibulum aenean nonummy</a></li>
+                                        <li><a href="#">-   Hendrerit mauris  cum sociis natoque </a></li>
+                                        <li><a href="#">-   Enatibus et magnis arturient montes </a></li>
+                                        <li><a href="#">-   Ascetur ridiculus mus nulla dui</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <figure><img src="img/page1_icon3.png" alt=""></figure>
+                            <div class="extra-wrap">
+                                <p class="title">tuna</p>
+                                <div class="extra-wrap">
+                                    <ul class="list3">
+                                        <li><a href="#">-   Praesent vestibulum aenean nonummy</a></li>
+                                        <li><a href="#">-   Hendrerit mauris  cum sociis natoque </a></li>
+                                        <li><a href="#">-   Enatibus et magnis arturient montes </a></li>
+                                        <li><a href="#">-   Ascetur ridiculus mus nulla dui</a></li>
+                                        <li><a href="#">-   Usce feugiat malesuada odio morbi nunc</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <figure><img src="img/page1_icon2.png" alt=""></figure>
+                            <div class="extra-wrap">
+                                <p class="title">shrimps</p>
+                                <div class="extra-wrap">
+                                    <ul class="list3">
+                                        <li><a href="#">-   Praesent vestibulum aenean nonummy</a></li>
+                                        <li><a href="#">-   Hendrerit mauris  cum sociis natoque </a></li>
+                                        <li><a href="#">-   Enatibus et magnis arturient montes </a></li>
+                                        <li><a href="#">-   Ascetur ridiculus mus nulla dui</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <figure><img src="img/page1_icon3.png" alt=""></figure>
+                            <div class="extra-wrap">
+                                <p class="title">tuna</p>
+                                <div class="extra-wrap">
+                                    <ul class="list3">
+                                        <li><a href="#">-   Praesent vestibulum aenean nonummy</a></li>
+                                        <li><a href="#">-   Hendrerit mauris  cum sociis natoque </a></li>
+                                        <li><a href="#">-   Enatibus et magnis arturient montes </a></li>
+                                        <li><a href="#">-   Ascetur ridiculus mus nulla dui</a></li>
+                                        <li><a href="#">-   Usce feugiat malesuada odio morbi nunc</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <figure><img src="img/page1_icon1.png" alt=""></figure>
+                            <div class="extra-wrap">
+                                <p class="title">Lobsters</p>
+                                <ul class="list3">
+                                    <li><a href="#">-   Praesent vestibulum aenean nonummy</a></li>
+                                    <li><a href="#">-   Hendrerit mauris  cum sociis natoque </a></li>
+                                    <li><a href="#">-   Enatibus et magnis arturient montes </a></li>
+                                    <li><a href="#">-   Ascetur ridiculus mus nulla dui</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="list_btn1">
+                    <a id="prev1" class="prev1" href="#"></a>
+                    <a id="next1" class="next1" href="#"></a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="col-lg-7 col-md-12 col-sm-12 right-box">
+            <div>
+                <h2>platos de esta semana:</h2>
+                <div class="list_carousel2 responsive clearfix">
+                    <ul class="foo">
+                        <li>
+                            <div>
+                                <figure><a href="img/img1.jpg"><i></i><img src="img/page1_pic1.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">seafood<br>pasta</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <figure><a href="img/img4.jpg"><i></i><img src="img/page1_pic4.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">Steamed<br>Crabs</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <figure><a href="img/img2.jpg"><i></i><img src="img/page1_pic2.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">seafood<br>paella</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <figure><a href="img/img5.jpg"><i></i><img src="img/page1_pic5.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">seafood<br>pasta2</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <figure><a href="img/img3.jpg"><i></i><img src="img/page1_pic3.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">shrimps &<br>octopus</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <figure><a href="img/img6.jpg"><i></i><img src="img/page1_pic6.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">grilled<br>tuna</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <figure><a href="img/img2.jpg"><i></i><img src="img/page1_pic2.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">seafood<br>paella</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <figure><a href="img/img5.jpg"><i></i><img src="img/page1_pic5.jpg" alt=""></a></figure>
+                                <div class="caption">
+                                    <p class="title">seafood<br>pasta2</p>
+                                    <p class="price">$15.10</p>
+                                    <img src="img/anchor.png" alt="">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="list_btn2">
+                        <a id="prev2" class="prev2" href="#"></a>
+                        <a id="next2" class="next2" href="#"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-box3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-12 col-sm-12">
+                    <p class="title">August<br>25, 2014</p>
+                    <p class="title2">Sara<br>Johnson</p>
+                    <p>solo programs<br>doors 20 p.m.</p>
+                    <a href="#" class="btn-default btn1">book now!<i></i></a>
+                </div>
+                <div class="col-lg-7 col-md-12 col-sm-12">
+                    <div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="thumb-pad1 maxheight">
+                                    <div class="thumbnail">
+                                        <figure><img src="img/wave.png" alt=""></figure>
+                                        <div class="caption">
+                                            <p class="title">Kids eat free <br>or 2 courses <br>for <span>$9.99</span></p>
+                                            <p class="description">JOIN US FOR <br>SUNDAY SIESTA</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="thumb-pad1 maxheight">
+                                    <div class="thumbnail">
+                                        <figure><img src="img/wave.png" alt=""></figure>
+                                        <div class="caption">
+                                            <p class="title">25% off <br>for students</p>
+                                            <p class="description">plus enjoy our <br>other tempting <br>student offers</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="thumb-pad1 maxheight">
+                                    <div class="thumbnail">
+                                        <figure><img src="img/wave.png" alt=""></figure>
+                                        <div class="caption">
+                                            <p class="title">Cater your <br>next party <br>with us</p>
+                                            <p class="description">GET MORE INFO <br>ABOUT OUR <br>CATERING</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="thumb-pad1 maxheight">
+                                    <div class="thumbnail">
+                                        <figure><img src="img/wave.png" alt=""></figure>
+                                        <div class="caption">
+                                            <p class="title">Lunch <br>from $12.99</p>
+                                            <p class="description">TRY OUR DELICIOUS <br>LUNCH MENU FROM <br>JUST $5.99 </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box2"><em></em></div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

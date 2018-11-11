@@ -1,0 +1,34 @@
+backend_files_index:
+    path: /
+    defaults: { _controller: BackendBundle:Files:index }
+    methods: [GET]
+
+backend_files_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Files:list }
+    methods:   [GET]
+
+backend_files_list_ajax:
+    path:  /list-ajax
+    defaults: { _controller: BackendBundle:Files:listAjax }
+    methods:   [GET, POST]
+
+backend_files_create:
+    path: /create
+    defaults: { _controller: BackendBundle:Files:create }
+    methods: [GET, POST]
+
+backend_files_upload:
+    path: /upload
+    defaults: { _controller: BackendBundle:Files:upload }
+    methods: [GET, POST]
+
+backend_files_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Files:edit }
+    methods: [GET, POST]
+
+backend_files_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Files:delete }
+    methods:   [GET, POST, DELETE]

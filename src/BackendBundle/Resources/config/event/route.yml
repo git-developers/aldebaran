@@ -1,0 +1,29 @@
+backend_event_index:
+    path: /
+    defaults: { _controller: BackendBundle:Event:index }
+    methods: [GET]
+
+backend_event_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Event:list }
+    methods:   [GET]
+
+backend_event_create:
+    path: /create
+    defaults: { _controller: BackendBundle:Event:create }
+    methods: [GET, POST]
+
+backend_event_create_update:
+    path:  /create-update
+    defaults: { _controller: BackendBundle:Event:createUpdate }
+    methods:   [GET, POST]
+
+backend_event_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Event:edit }
+    methods: [GET, POST]
+
+backend_event_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Event:delete }
+    methods:   [GET, POST]

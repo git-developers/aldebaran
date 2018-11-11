@@ -1,0 +1,7 @@
+main_homepage:
+    path:     /
+    defaults: { _controller: MainBundle:Default:index }
+
+main_security:
+    resource:  "@MainBundle/Resources/config/security/route.yml"
+    prefix: /security

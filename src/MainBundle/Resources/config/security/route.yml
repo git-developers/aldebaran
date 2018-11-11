@@ -1,0 +1,15 @@
+main_security_login:
+    path: /login
+    defaults: { _controller: MainBundle:Security:login }
+    methods: [GET, POST]
+
+main_security_login_check:
+    path: /login_check
+    defaults: { _controller: MainBundle:Security:loginCheck }
+    methods: [GET, POST]
+
+main_security_logout:
+    path: /logout
+    defaults: { _controller: MainBundle:Security:logout }
+    methods: [GET, POST]
+

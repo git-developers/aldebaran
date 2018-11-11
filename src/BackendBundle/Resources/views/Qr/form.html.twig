@@ -1,0 +1,207 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        #image-holder{
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="application/javascript">
+        jQuery(function($) {
+
+            //https://developers.google.com/chart/infographics/docs/qr_codes
+            $( "#qr_preview" ).click(function( event ) {
+                event.preventDefault();
+
+                var chs = $('#{{ formEntity.chs.vars.id }}').val();
+                var chl = $('#{{ formEntity.chl.vars.id }}').val();
+                var choe = $('#{{ formEntity.choe.vars.id }}').val();
+
+                if(chl == ""){
+                    $('#image-holder').empty().html('<div class="alert alert-warning alert-dismissible"><h4><i class="icon fa fa-warning"></i> Info</h4> Escribe data </div>');
+                    return false;
+                }
+
+                var url = 'http://chart.apis.google.com/chart?cht=qr&chs='+chs+'&chl='+chl+'&choe='+choe;
+                image = new Image();
+                image.src = url;
+                image.className = 'img-responsive';
+                image.onload = function () {
+                    $('#image-holder').empty().append(image);
+                };
+
+                image.onerror = function () {
+                    $('#image-holder').empty().html('Esa imagen no está disponible.');
+                }
+
+                $('#image-holder').empty().html('Trabajando...');
+
+                return false;
+
+            });
+
+        });
+    </script>
+
+{% endblock %}
+
+{% block contenido %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-qrcode"></i> QR
+            <small>{{ action }}</small>
+            {% if id is not null %}
+                <button type="button" class="btn btn-primary btn-xs">{{ id }}</button>
+            {% endif %}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        {#<h3 class="box-title">Horizontal Form</h3>#}
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    {{ form_start(formEntity)}}
+                    <div class="box-body">
+
+                        {% if formEntity.vars.errors|length > 0 %}
+                            <div class="info-box bg-red">
+                                <span class="info-box-icon"><i class="fa fa-fw fa-close"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Error</span>
+                                    <span class="info-box-number">{{ form_errors(formEntity) }}</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 70%"></div>
+                                    </div>
+                                      <span class="progress-description">
+                                        -
+                                      </span>
+                                </div><!-- /.info-box-content -->
+                            </div>
+                        {% endif %}
+
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group {% if formEntity.chl.vars.errors|length > 0 %}has-error{% endif %}">
+                                    {{ form_label(formEntity.chl) }}
+                                    {% if formEntity.chl.vars.errors|length > 0 %}
+                                        <label class="control-label" for="inputError">
+                                            <i class="fa fa-times-circle-o"></i> error
+                                        </label>
+                                    {% endif %}
+
+                                    {{ form_widget(formEntity.chl) }}
+
+                                    {% if formEntity.chl.vars.errors|length > 0 %}
+                                        <span class="help-block">{{ form_errors(formEntity.chl) }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="form-group {% if formEntity.chs.vars.errors|length > 0 %}has-error{% endif %}">
+                                    {{ form_label(formEntity.chs) }}
+                                    {% if formEntity.chs.vars.errors|length > 0 %}
+                                        <label class="control-label" for="inputError">
+                                            <i class="fa fa-times-circle-o"></i> error
+                                        </label>
+                                    {% endif %}
+
+                                    {{ form_widget(formEntity.chs) }}
+
+                                    {% if formEntity.chs.vars.errors|length > 0 %}
+                                        <span class="help-block">{{ form_errors(formEntity.chs) }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="form-group {% if formEntity.choe.vars.errors|length > 0 %}has-error{% endif %}">
+                                    {{ form_label(formEntity.choe) }}
+                                    {% if formEntity.choe.vars.errors|length > 0 %}
+                                        <label class="control-label" for="inputError">
+                                            <i class="fa fa-times-circle-o"></i> error
+                                        </label>
+                                    {% endif %}
+
+                                    {{ form_widget(formEntity.choe) }}
+
+                                    {% if formEntity.choe.vars.errors|length > 0 %}
+                                        <span class="help-block">{{ form_errors(formEntity.choe) }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group {% if formEntity.chld.vars.errors|length > 0 %}has-error{% endif %}">
+                                    {{ form_label(formEntity.chld) }}
+                                    {% if formEntity.chld.vars.errors|length > 0 %}
+                                        <label class="control-label" for="inputError">
+                                            <i class="fa fa-times-circle-o"></i> error
+                                        </label>
+                                    {% endif %}
+
+                                    {{ form_widget(formEntity.chld) }}
+
+                                    {% if formEntity.chld.vars.errors|length > 0 %}
+                                        <span class="help-block">{{ form_errors(formEntity.chld) }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="box-footer">
+                                    {{ form_widget(formEntity.submit) }}
+                                </div><!-- /.box-footer -->
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="box-footer">
+                                    <button type="button" id="qr_preview" name="" class="btn btn-primary pull-right">
+                                        <i class="fa fa-fw fa-qrcode"></i> Preview
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div><!-- /.box-body -->
+                    {{ form_end(formEntity)}}
+
+                </div>
+
+            </div><!-- ./col -->
+        </div><!-- /.row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div align="center" id="image-holder"></div>
+            </div>
+        </div>
+
+    </section><!-- /.content -->
+{% endblock %}

@@ -1,0 +1,487 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% set info = 'agregar floor planning' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {#
+    IMAGE
+    https://cloud.smartdraw.com/editor.aspx?templateId=0218cedc-f8be-4be9-b26d-a2d048066820#docId=Floor_Plan.sdr&ownerUserId=16936843&depo=2
+    #}
+
+    <style>
+        .dropzone {
+            border: 2px dashed #c5c5c5;
+            padding: 100px;
+            background: 0 0;
+        }
+
+        #sortable{
+            /*margin-left: -40px;*/
+            /*list-style-type: none;*/
+        }
+
+        .symbols{
+            width: 100px;
+            height: 100px;
+            cursor: move;
+            position: absolute;
+        }
+
+
+    </style>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#window.location.href = unescape('{{ path('main_security_login') }}');#}
+    {#<script src="{{ asset('bundles/backend/js/modal-seleccione-archivo.js')}}" ></script>#}
+
+    {#https://jqueryui.com/draggable/#events#}
+
+    <script type="text/javascript">
+
+        jQuery(function($) {
+
+            $(document).on('mouseover', '#droppable',  function(event) {
+
+                $(".drag-floorplan").draggable({
+                    containment: "#droppable",
+                    scroll: false,
+                    start: function() {
+                        console.log("start - ");
+                    },
+                    drag: function() {
+
+                        var offset = $(this).offset();
+                        var positionX = offset.left;
+                        var positionY = offset.top;
+
+                        console.log("DRAG :: positionX: " + positionX + " - positionY: " + positionY);
+                        console.log("DRAG :: ID ELEMTEN: " + $(this).data("id"));
+
+                        {#
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ path('backend_element_update_position') }}',
+                            data: {
+                                'idElement':$(this).data("id"),
+                                'positionX':positionX,
+                                'positionY':positionY,
+                            },
+                            dataType: "json",
+                            beforeSend: function(data) {
+
+                            },
+                            success: function(data, textStatus, jqXHR) {
+
+                            },
+                            error: function (jqXHR, exception) {
+
+                            }
+                        });
+                        #}
+
+                    },
+                    stop: function() {
+                        console.log("stop - ");
+                    }
+                });
+            });
+
+
+            $('.draggable').draggable({
+                cancel: false,
+                revert:true,
+                cursor: 'move',
+//                containment: '#droppable',
+                //snap: '#droppable'
+            });
+
+            $('#droppable').droppable({
+                accept: '.draggable',
+                over: function(event, ui) {
+
+                },
+                drop: function(event, ui) {
+                    var elementType = ui.draggable.attr("id");
+
+                    /*
+                    var positionX = ui.offset.left - $(this).offset().left;
+                    var positionY = ui.offset.top - $(this).offset().top;
+                    console.log("DROP :: positionX: " + positionX + " - positionY: " + positionY);
+                    */
+
+                    createElementAndAssignToFloorPlanning(elementType);
+
+                    {#
+                    var $this = $(this);
+                    ui.draggable.position({
+                        my: "center",
+                        at: "center",
+                    });
+                    #}
+
+                },
+                out: function(event, ui) {
+                    //console.log('OUT');
+                }
+            });
+
+
+            function createElementAndAssignToFloorPlanning(elementType){
+
+                if (typeof elementType == 'undefined'){
+                    return;
+                }
+
+
+
+                {#
+                if (!$('#form-status').val()) {
+                    alert.warningMessage('Tiene que guardar el formulario para para poder agregar elementos');
+                    return;
+                }
+                #}
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('backend_element_create_and_assign_to_floorplan') }}',
+                    data: {
+                        'elementType':elementType,
+                        'idFloorplan':'{{ floorPlan.idIncrement }}',
+//                        'positionX':positionX,
+//                        'positionY':positionY,
+                    },
+                    dataType: "json",
+                    beforeSend: function(data) {
+                    },
+                    success: function(data, textStatus, jqXHR) {
+
+                        console.log('REDIRECT textStatus::: ' + textStatus);
+
+                        if(data.status == 'ok') {
+                            $("#droppable").append(data.element);
+                        }else if(data.status == 'access-denied') {
+                            alert.errorMessage('acceso denegado: no tiene permisos (element 01)');
+                        }else{
+                            alert.errorMessage('(element 02)');
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log('error: ' + jqXHR + ' - ' + exception);
+                        alert.errorMessage('(element 03)');
+                    }
+                });
+            }
+
+
+            $(document).on('submit', "[name='form']", function(event) {
+                event.preventDefault();
+
+
+                {#
+                var elements = $("input[name='form[{{ formEntity.element.vars.name }}][]']").length;
+
+                if(!$('#{{ formEntity.name.vars.id }}').val()){
+                    alert.warningMessage('falto el titulo');
+
+                    //show elements tab
+                    $('.nav-tabs a[href="#form-properties"]').tab('show');
+                    return;
+                }
+                #}
+
+                {#
+                else if (elements == 0) {
+                    alert.warningMessage('agregue elementos');
+
+                    //show elements tab
+                    $('.nav-tabs a[href="#form-properties"]').tab('show');
+                    return;
+                }
+                #}
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('backend_form_create_update') }}',
+                    //contentType: "application/json; charset=utf-8",
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    beforeSend: function(data) {
+
+                    },
+                    success: function(data, textStatus, jqXHR) {
+
+                        if(data.status == 'ok') {
+                            alert.successMessage();
+                            $('#form-status').val(1)
+                        }else if(data.status == 'access-denied') {
+                            alert.errorMessage('acceso denegado: no tiene permisos (submit 01)');
+                        }else{
+                            alert.errorMessage('(submit 02)');
+                        }
+                    },
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                        alert.errorMessage('(submit 03)');
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR + ' - ' + exception);
+                        alert.errorMessage('(submit 04)');
+                    }
+                });
+
+            });
+
+
+        });
+
+
+        var alert = (function() {
+            //var time = '1000';
+            var classDefault = 'info-box color-palette';
+            var bgBlue = 'bg-light-blue';
+            var iconDefault = '<i class="fa fa-fw fa-bookmark-o"></i>';
+            var messageDefault = '{{ info }}';
+            var div = $('#alert');
+
+            var toggleClass = function(className, time) {
+                div.removeClass().addClass(classDefault).addClass(className).delay(time).queue(function(next){
+                    $(this).removeClass(className);
+                    $(this).addClass(bgBlue);
+                    next();
+                });
+            }
+
+            var toggleIcon = function(icon, time) {
+                div.find('.info-box-icon').html(icon).delay(time).queue(function(next){
+                    $(this).html(iconDefault);
+                    next();
+                });
+            }
+
+            var toggleHtml = function(message, time) {
+                div.find('.info-box-number').html(message).delay(time).queue(function(next){
+                    $(this).html(messageDefault);
+                    next();
+                });
+            }
+
+            return {
+                successMessage: function() {
+                    toggleClass('bg-green', 1000);
+                    toggleIcon('<i class="fa fa-fw fa-thumbs-o-up"></i>', 1000);
+                    toggleHtml('Se guardo correctamente', 1000);
+                },
+                errorMessage: function(message) {
+                    toggleClass('bg-red', 1000);
+                    toggleIcon('<i class="fa fa-fw fa-warning"></i>', 1000);
+                    toggleHtml('Ocurrio una excepción: ' + message, 1000);
+                },
+                warningMessage: function(message) {
+                    toggleClass('bg-yellow', 2500);
+                    toggleIcon('<i class="fa fa-fw fa-info-circle"></i>', 2500);
+                    toggleHtml(message, 2500);
+                }
+            };
+
+        })();
+
+    </script>
+
+
+{% endblock %}
+
+{% block contenido %}
+
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-object-group"></i> Floor planning
+            <small>crear</small>
+            {% if id is not null %}
+                <button type="button" class="btn btn-primary btn-xs">{{ id }}</button>
+            {% endif %}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        {{ form_start(formEntity, {'name': 'form'}) }}
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <div id="alert" class="info-box color-palette bg-light-blue">
+                            <span class="info-box-icon">
+                                <i class="fa fa-fw fa-bookmark-o"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Info</span>
+                                <span class="info-box-number">{{ info }}</span>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 70%"></div>
+                                </div>
+                                <span class="progress-description">floor planning din&aacute;mico</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 ">
+                        {{ form_widget(formEntity.submit) }}
+                    </div>
+                </div>
+
+                {#<canvas id="droppable" style="background-color: yellow; width: 100%; min-height: 500px;"></canvas>#}
+                <div id="droppable" style="min-height: 700px; ">
+                    {% if floorPlan.element is defined %}
+                        {% for element in floorPlan.element %}
+                            {{ render(controller('BackendBundle:Element:displayElementsByFloorplan', { 'floorPlan': floorPlan, 'element': element })) }}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#elements" data-toggle="tab">elementos</a>
+                        </li>
+                        <li>
+                            <a href="#element-property" data-toggle="tab">propiedades</a>
+                        </li>
+                        <li id="form-tab">
+                            <a href="#form-properties" data-toggle="tab">floor planning</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <!-- /.elements INICIO -->
+                        <div class="active tab-pane" id="elements">
+
+                            <div class="box-group" id="accordion">
+
+                                <div>
+                                    <div>
+                                        <div>
+
+                                {% set tagNuevo = null %}
+                                {% set tagAntiguo = null %}
+                                {% for elementType in elementTypes %}
+
+                                    {% set tagNuevo = elementType.group.nameEs %}
+
+                                    {% if tagNuevo != tagAntiguo %}
+                                        {% set tagAntiguo = elementType.group.nameEs %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel box box-{{ random(['primary', 'danger', 'success', 'warning', 'info']) }}">
+                                            <div class="box-header with-border">
+                                                <h4 class="box-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ loop.index }}" aria-expanded="false" class="collapsed">
+                                                        {{ tagNuevo }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse{{ loop.index }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                <div class="box-body">
+
+                                    {% endif %}
+
+                                    <div id="{{ elementType.type }}" class="col-xs-6 draggable" style="z-index: 100">
+                                        <button type="button" title="{{ elementType.nameEs}}" class="{{ random(['bg-purple', 'bg-orange', 'bg-maroon', 'bg-olive', 'bg-aqua', 'bg-teal']) }} btn btn-lg btn-block " style="text-align:left; font-size: 13px; margin-bottom: 5px">
+                                            <img src="{{ asset('bundles/backend/images/symbols/' ~ elementType.icon)}}" class="img-responsive" style="height: 50px;" >
+                                            {{ elementType.nameEs | slice(0, 50) }}
+                                        </button>
+                                    </div>
+
+                                {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                        <!-- /.elements FIN -->
+
+
+                        <!-- /.element-property -->
+                        <div class="tab-pane" id="element-property">
+                            <ul class="timeline timeline-inverse">
+                                <li class="time-label">
+                                    <span class="bg-orange-active">Ingrese</span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-fw fa-sheqel bg-orange"></i>
+                                    <div id="element-edit" class="timeline-item">
+                                        seleccione el elemento a editar.
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- /.datos del formulario -->
+                        <div class="tab-pane" id="form-properties">
+                            <ul class="timeline timeline-inverse">
+                                <li class="time-label">
+                                    <span class="bg-maroon-active">Ingrese</span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-fw fa-file-text bg-maroon"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fa fa-fw fa-bookmark-o"></i> Info</span>
+                                        <h3 class="timeline-header"><a href="javascript:void(0)">Propiedades</a> del floor planning</h3>
+                                        <div class="timeline-body">
+                                            <div class="box-body">
+                                                <div class="form-group">
+                                                    {{ form_label(formEntity.name) }}
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-fw fa-text-height"></i>
+                                                        </div>
+                                                        {{ form_widget(formEntity.name) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form_label(formEntity.event) }}
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-fw fa-align-justify"></i>
+                                                        </div>
+                                                        {{ form_widget(formEntity.event) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+            </div>
+
+        </div>
+        {{ form_end(formEntity)}}
+
+    </section>
+
+    {#{{ include("BackendBundle:Files:modalSeleccioneFiles.html.twig") }}#}
+
+{% endblock %}

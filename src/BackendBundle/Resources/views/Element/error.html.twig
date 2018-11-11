@@ -1,0 +1,46 @@
+{% set uniqid = random() %}
+
+<li id="div-error" class="col-md-6" style="display: block; float: left;">
+    <div class="box box-danger " >
+        <div class="box-header with-border">
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool " data-widget="remove"  onclick="accion.removeDiv(this.value);">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body " >
+            <div class="row ">
+                <div class="col-md-12" >
+                    <div class="form-group" style="margin: 0 3px 0 3px">
+                        <label for="" style="cursor: move">Hubo una excepci&oacute;n</label>
+                        <div class="input-group ">
+                            <span class="input-group-addon">
+                                <i class="fa fa-fw fa-warning"></i>
+                            </span>
+                            <input type="text" placeholder="re-intentar" class="form-control" readonly disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var accion = (function(){
+            var defaultValue = 0;
+            var remove = function(valor){
+                var element = document.getElementById('div-error');
+                element.parentNode.removeChild(element);
+            }
+
+            return {
+                removeDiv : function(valor){
+                    remove(valor);
+                }
+            }
+        })();
+    </script>
+
+</li>
+

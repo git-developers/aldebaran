@@ -1,0 +1,24 @@
+backend_about_index:
+    path: /
+    defaults: { _controller: BackendBundle:About:index }
+    methods: [GET]
+
+backend_about_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:About:list }
+    methods:   [GET]
+
+backend_about_create:
+    path: /create
+    defaults: { _controller: BackendBundle:About:create }
+    methods: [GET, POST]
+
+backend_about_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:About:edit }
+    methods: [GET, POST]
+
+backend_about_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:About:delete }
+    methods:   [GET, POST]

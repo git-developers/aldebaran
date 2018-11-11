@@ -1,0 +1,7 @@
+api_default:
+    resource:  "@ApiBundle/Resources/config/default/route.yml"
+    prefix: /default
+
+api_user:
+    resource:  "@ApiBundle/Resources/config/user/route.yml"
+    prefix: /user

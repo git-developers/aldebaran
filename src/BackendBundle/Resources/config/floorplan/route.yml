@@ -1,0 +1,24 @@
+backend_floorplan_index:
+    path: /
+    defaults: { _controller: BackendBundle:Floorplan:index }
+    methods: [GET]
+
+backend_floorplan_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Floorplan:list }
+    methods:   [GET]
+
+backend_floorplan_create_update:
+    path: /create-update
+    defaults: { _controller: BackendBundle:Floorplan:createUpdate }
+    methods: [GET, POST]
+
+backend_floorplan_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Floorplan:edit }
+    methods: [GET, POST]
+
+backend_floorplan_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Floorplan:delete }
+    methods:   [GET, POST]

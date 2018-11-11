@@ -1,0 +1,128 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block contenido %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-google"></i> Gcm
+            <small>enviar notificacion</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        {#<h3 class="box-title">Horizontal Form</h3>#}
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    <div class="box-body">
+
+                        {% if gcmForm.vars.errors|length > 0 %}
+                            <div class="info-box bg-red">
+                                <span class="info-box-icon"><i class="fa fa-fw fa-close"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Error</span>
+                                    <span class="info-box-number">{{ form_errors(gcmForm) }}</span>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 70%"></div>
+                                    </div>
+                                              <span class="progress-description">
+                                                -
+                                              </span>
+                                </div><!-- /.info-box-content -->
+                            </div>
+                        {% endif %}
+
+                        {{ form_start(gcmForm)}}
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.user) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.user) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.clickAction) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.clickAction) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.icon) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.icon) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.color) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.color) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.sound) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.sound) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.badge) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.badge) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.title) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.title) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(gcmForm.body) }}
+                            <div class="col-sm-10">
+                                {{ form_widget(gcmForm.body) }}
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            {{ form_widget(gcmForm.submit) }}
+                        </div><!-- /.box-footer -->
+
+                        {{ form_end(gcmForm)}}
+                    </div><!-- /.box-body -->
+
+                </div>
+
+            </div><!-- ./col -->
+        </div><!-- /.row -->
+
+    </section><!-- /.content -->
+{% endblock %}

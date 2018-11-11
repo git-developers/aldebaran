@@ -1,0 +1,39 @@
+backend_form_index:
+    path: /
+    defaults: { _controller: BackendBundle:Form:index }
+    methods: [GET]
+
+backend_form_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Form:list }
+    methods:   [GET]
+
+backend_form_create:
+    path: /create
+    defaults: { _controller: BackendBundle:Form:create }
+    methods: [GET, POST]
+
+backend_form_create_update:
+    path:  /create-update
+    defaults: { _controller: BackendBundle:Form:createUpdate }
+    methods:   [GET, POST]
+
+backend_form_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:Form:edit }
+    methods: [GET, POST]
+
+backend_form_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Form:delete }
+    methods:   [GET, POST]
+
+backend_form_display:
+    path: /display
+    defaults: { _controller: BackendBundle:Form:display }
+    methods: [GET, POST]
+
+backend_form_update_position:
+    path: /update-position
+    defaults: { _controller: BackendBundle:Form:updatePosition }
+    methods: [GET, POST]

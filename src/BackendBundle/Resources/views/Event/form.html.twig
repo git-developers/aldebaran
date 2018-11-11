@@ -1,0 +1,498 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% set info = action ~ ' evento' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        .dropzone {
+            border: 2px dashed #c5c5c5;
+            padding: 100px;
+            background: 0 0;
+        }
+
+        #sortable{
+            /*margin-left: 15px;*/
+            /*list-style-type: none;*/
+        }
+
+
+    </style>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#window.location.href = unescape('{{ path('main_security_login') }}');#}
+    {#<script src="{{ asset('bundles/backend/js/modal-seleccione-archivo.js')}}" ></script>#}
+
+    <script type="text/javascript">
+
+        jQuery(function($) {
+
+            window.onload = select.unSelectedForm();
+
+            /*
+             revert: 500,
+             axis: "y x",
+             cursorAt:{ top: 50 },
+             containment: 'window',
+             scroll:true,
+            */
+
+            $('#sortable').sortable({
+                tolerance:"pointer",
+                cursor: 'move',
+                //cursorAt: {left: 50, top: 5},
+                start: function(event, ui) {
+                    console.log('sortable :: start');
+                    //$(this).data("startingScrollTop",window.pageYOffset);
+                },
+                stop: function(event, ui){
+                    console.log('sortable :: stop');
+                },
+                change: function(event, ui) {
+                    console.log('sortable :: change');
+                },
+                update: function(event, ui) {
+
+                    var hash = {};
+                    $("#droppable .div-form").each(function(i, elm) {
+                        hash[$(elm).data("id")] = $(elm).index("#droppable .div-form");
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('backend_form_update_position') }}',
+                        data: {
+                            'hash': hash
+                        },
+                        dataType: "json",
+                        beforeSend: function(data) {
+
+                        },
+                        success: function(data, textStatus, jqXHR) {
+
+                        },
+                        error: function (jqXHR, exception) {
+
+                        }
+                    });
+
+                }
+            });
+
+            $('.draggable').draggable({
+                    cancel: false,
+                    revert:true
+            });
+
+            $('#droppable').droppable({
+                over: function(event, ui) {
+
+                },
+                drop: function(event, ui) {
+                    var id = ui.draggable.attr("id");
+                    displayForm(id);
+                },
+                out: function(event, ui) {
+                    //console.log('OUT');
+                }
+            });
+
+            function displayForm(id){
+
+                if (typeof id == 'undefined'){
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('backend_form_display') }}',
+                    data: {
+                        'id':id
+                    },
+                    beforeSend: function(data) {
+
+                    },
+                    success: function(data, textStatus, jqXHR) {
+
+                        if (data.redirect) {
+                            alert(data.redirect);
+                            console.log('REDIRECT 333::: ' + data.redirect);
+                            alert.errorMessage('sss 44: ' + data.redirect);
+
+                            // data.redirect contains the string URL to redirect to
+                            window.location.href = data.redirect;
+                        }
+
+                        var Data = $.parseJSON(data);
+
+                        if(Data.status == 'ok') {
+                            $("#sortable").append(Data.form);
+                        }else if(Data.status == 'access-denied') {
+                            alert.errorMessage('acceso denegado: no tiene permisos (element 01)');
+                        }else{
+                            alert.errorMessage('(element 02)');
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR + ' - ' + exception);
+                        alert.errorMessage('(element 03)');
+                    }
+                });
+            }
+
+            $(document).on('submit', "[name='event']", function(event) {
+                event.preventDefault();
+
+
+                var elements = $("input[name='event[{{ formEntity.form.vars.id }}][]']").length;
+
+                if(!$('#{{ formEntity.code.vars.id }}').val()) {
+                    alert.warningMessage('falto el código');
+                    return;
+                }else if(!$('#{{ formEntity.title.vars.id }}').val()) {
+                    alert.warningMessage('falto el titulo');
+                    return;
+                }else if (elements == 0) {
+                    alert.warningMessage('agregue formularios');
+                    return;
+                }
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('backend_event_create_update') }}',
+                    //contentType: "application/json; charset=utf-8",
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    beforeSend: function(data) {
+
+                    },
+                    success: function(data, textStatus, jqXHR) {
+
+                        //var Data = $.parseJSON(data);
+
+                        if (data.redirect) {
+                            alert(data.redirect);
+                            console.log('REDIRECT ::: ' + data.redirect);
+                            alert.errorMessage('sss: ' + data.redirect);
+
+                            // data.redirect contains the string URL to redirect to
+                            window.location.href = data.redirect;
+                        }
+
+                        if(data.status == 'ok') {
+                            alert.successMessage();
+                        }else if(data.status == 'access-denied') {
+                            alert.errorMessage('acceso denegado: no tiene permisos (submit 01)');
+                        }else{
+                            alert.errorMessage('(submit 02)');
+                        }
+                    },
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                        alert.errorMessage('(submit 03)');
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR + ' - ' + exception);
+                        alert.errorMessage('(submit 04)');
+                    }
+                });
+
+            });
+
+            $(document).on('click', '#sortable .delete', function() {
+
+                var idForm= $(this).data('id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('backend_eventhasform_remove_form') }}',
+                    //contentType: "application/json; charset=utf-8",
+                    data: {
+                        'eventUniqueId':'{{ event.uniqueId }}',
+                        'idForm':idForm
+                    },
+                    dataType: "json",
+                    beforeSend: function(data) {
+
+                    },
+                    success: function(data, textStatus, jqXHR) {
+
+                        //var Data = $.parseJSON(data);
+
+                        if (data.redirect) {
+                            alert(data.redirect);
+                            console.log('REDIRECT ::: ' + data.redirect);
+                            alert.errorMessage('sss: ' + data.redirect);
+
+                            // data.redirect contains the string URL to redirect to
+                            window.location.href = data.redirect;
+                        }
+
+                        if(data.status == 'ok') {
+                            $('.div-form-' + idForm).slideUp("normal", function() {
+                                $(this).remove();
+                            });
+                        }else if(data.status == 'access-denied') {
+                            alert.errorMessage('acceso denegado: no tiene permisos (delete 01)');
+                        }else{
+                            alert.errorMessage('(delete 02)');
+                        }
+                    },
+                    failure: function(errMsg) {
+                        console.log(errMsg);
+                        alert.errorMessage('(delete 03)');
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR + ' - ' + exception);
+                        alert.errorMessage('(delete 04)');
+                    }
+                });
+
+
+
+            });
+
+        });
+
+        var alert = (function() {
+            var time = '1000';
+            var classDefault = 'info-box color-palette';
+            var bgBlue = 'bg-light-blue';
+            var iconDefault = '<i class="fa fa-fw fa-bookmark-o"></i>';
+            var messageDefault = '{{ info }}';
+            var div = $('#alert');
+
+            var toggleClass = function(className) {
+                div.removeClass().addClass(classDefault).addClass(className).delay(time).queue(function(next){
+                    $(this).removeClass(className);
+                    $(this).addClass(bgBlue);
+                    next();
+                });
+            }
+
+            var toggleIcon = function(icon) {
+                div.find('.info-box-icon').html(icon).delay(time).queue(function(next){
+                    $(this).html(iconDefault);
+                    next();
+                });
+            }
+
+            var toggleHtml = function(message) {
+                div.find('.info-box-number').html(message).delay(time).queue(function(next){
+                    $(this).html(messageDefault);
+                    next();
+                });
+            }
+
+            return {
+                successMessage: function() {
+                    toggleClass('bg-green');
+                    toggleIcon('<i class="fa fa-fw fa-thumbs-o-up"></i>');
+                    toggleHtml('Se guardo el evento');
+                },
+                errorMessage: function(message) {
+                    toggleClass('bg-red');
+                    toggleIcon('<i class="fa fa-fw fa-warning"></i>');
+                    toggleHtml('No se pudo guardar: ' + message);
+                },
+                warningMessage: function(message) {
+                    toggleClass('bg-yellow');
+                    toggleIcon('<i class="fa fa-fw fa-info-circle"></i>');
+                    toggleHtml(message);
+                }
+            };
+
+        })();
+
+        var select = (function() {
+            var div = '';
+
+            var clear = function() {
+                $("#{{ formEntity.form.vars.id }} option:selected").prop("selected", false)
+            }
+
+            return {
+                unSelectedForm: function() {
+                    clear();
+                }
+            };
+
+        })();
+
+    </script>
+
+{% endblock %}
+
+{% block contenido %}
+
+    {#
+    <div class="row margin dropzone">
+    <div class="col-md-12 ">
+        <i class="fa fa-fw fa-4x fa-cloud-download"></i>
+        <h3>Arrastre y suelte los elementos aqu&iacute;</h3>
+    </div>
+    </div>
+    #}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-object-ungroup"></i> Evento
+            <small>{{ action }}</small>
+            {% if id is not null %}
+                <button type="button" class="btn btn-primary btn-xs">{{ id }}</button>
+            {% endif %}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        {{ form_start(formEntity, {'name': 'event'}) }}
+        <div class="row">
+            <div class="col-md-8">
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <div id="alert" class="info-box color-palette bg-light-blue">
+                            <span class="info-box-icon">
+                                <i class="fa fa-fw fa-bookmark-o"></i>
+                            </span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Info</span>
+                                <span class="info-box-number">{{ info }}</span>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: 70%"></div>
+                                </div>
+                                <span class="progress-description">evento din&aacute;mico</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 ">
+                        {{ form_widget(formEntity.submit) }}
+                    </div>
+                </div>
+
+                <div id="droppable" style="min-height: 500px">
+                    <div id="sortable">
+                        {% if event.form is defined %}
+                            {% for form in event.form %}
+                                {{ render(controller('BackendBundle:Form:displayHtml', { 'event': event, 'form': form })) }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#forms" data-toggle="tab">formularios</a>
+                        </li>
+                        <li>
+                            <a href="#event-property" data-toggle="tab">evento</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <!-- /.forms -->
+                        <div class="active tab-pane" id="forms">
+                            {% if forms is not empty %}
+                                <div class="row">
+                                    {% for form in forms %}
+                                        <div id="{{ form.idIncrement }}" class="col-xs-6 draggable" style="z-index: 100">
+                                            <button title="{{ form.description }}" type="button" class="{{ random(['bg-purple', 'bg-orange', 'bg-maroon', 'bg-olive', 'bg-aqua', 'bg-teal']) }} btn btn-lg btn-block " style="text-align:left; margin-bottom: 5px">
+                                                <i class="fa fa-fw fa-file-text"></i> {{ form.title | slice(0, 15) }}
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <ul class="timeline timeline-inverse">
+                                    <li class="time-label">
+                                        <span class="bg-orange-active">Informaci&oacute;n</span>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-fw fa-sheqel bg-orange"></i>
+                                        <div id="element-edit" class="timeline-item">
+                                            aun no hay formularios. <a target="_parent" href="{{ path('backend_form_create') }}">Agregue uno</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                        <!-- /.event-property -->
+                        <div class="tab-pane" id="event-property">
+                            <ul class="timeline timeline-inverse">
+                                <li class="time-label">
+                                    <span class="bg-maroon-active">Ingrese</span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-fw fa-file-text bg-maroon"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fa fa-fw fa-bookmark-o"></i> Info</span>
+                                        <h3 class="timeline-header"><a href="javascript:void(0)">Propiedades</a> del evento</h3>
+                                        <div class="timeline-body">
+                                            <div class="box-body">
+                                                <div class="form-group">
+                                                    {{ form_label(formEntity.code) }}
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-fw fa-code"></i>
+                                                        </div>
+                                                        {{ form_widget(formEntity.code) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form_label(formEntity.title) }}
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-fw fa-text-height"></i>
+                                                        </div>
+                                                        {{ form_widget(formEntity.title) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    {{ form_label(formEntity.description) }}
+                                                    <div class="input-group">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-fw fa-align-justify"></i>
+                                                        </div>
+                                                        {{ form_widget(formEntity.description) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+            </div>
+
+        </div>
+        {{ form_end(formEntity)}}
+
+    </section>
+
+    {#{{ include("BackendBundle:Files:modalSeleccioneFiles.html.twig") }}#}
+
+{% endblock %}

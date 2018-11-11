@@ -1,0 +1,37 @@
+{% extends "FrontendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#<script src="{{ asset('bundles/main/dist/js/pages/dashboard.js')}}"></script>#}
+
+{% endblock %}
+
+{% block contenido %}
+
+    <section class="well-lg">
+        <div class="container">
+            <h2 class="underline">{{ video.title | raw }}</h2>
+            <div class="row offset-4">
+                <div class="col-sm-12">
+                    <h5>video</h5>
+                    <p>{{ video.body | raw }}</p>
+                </div>
+            </div>
+            <div class="row offset-4" align="center">
+                <iframe
+                        width="853"
+                        height="480"
+                        src="https://www.youtube.com/embed/{{ video.youtubeId }}?html5=1&autoplay=1"
+                        frameborder="0" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

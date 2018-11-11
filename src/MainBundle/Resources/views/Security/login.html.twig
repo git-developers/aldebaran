@@ -1,0 +1,71 @@
+{% extends "MainBundle::template.html.twig" %}
+
+{% block contenido %}
+
+    <div class="login-box" style="background-color: #EFF5E1">
+        <div class="login-logo">
+            <a href="#"><b>US</b>MP</a>
+        </div><!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">Inicia sesión</p>
+
+            {% if error %}
+                <div class="info-box bg-red">
+                    <span class="info-box-icon"><i class="fa fa-fw fa-close"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Error</span>
+                        <span class="info-box-number">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 70%"></div>
+                        </div>
+                  <span class="progress-description">
+                    -
+                  </span>
+                    </div><!-- /.info-box-content -->
+                </div>
+            {% endif %}
+
+            <form action="{{ path('main_security_login_check') }}" method="post">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" placeholder="Username"/>
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" class="form-control" id="password" name="_password" placeholder="Password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input type="checkbox"> Recordar
+                            </label>
+                        </div>
+                    </div><!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Log in</button>
+                    </div><!-- /.col -->
+                </div>
+            </form>
+
+            {#<div class="social-auth-links text-center">#}
+                {#<p>- OR -</p>#}
+                {#<a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using Facebook</a>#}
+                {#<a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a>#}
+            {#</div><!-- /.social-auth-links -->#}
+
+            {#<a href="#">I forgot my password</a><br>#}
+            {#<a href="register.html" class="text-center">Register a new membership</a>#}
+
+        </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->
+
+{% endblock %}
+
+
+
+
+
+

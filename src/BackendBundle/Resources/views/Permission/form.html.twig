@@ -1,0 +1,63 @@
+{% extends "BackendBundle::template.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block contenido %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-fw fa-expeditedssl"></i>  Permiso
+            <small>{{ action }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        {#<h3 class="box-title">Horizontal Form</h3>#}
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+
+                    {{ form_errors(permissionForm) }}
+                    {{ form_start(permissionForm)}}
+                        <div class="box-body">
+
+                            <div class="form-group">
+                                {{ form_label(permissionForm.name) }}
+                                <div class="col-sm-10">
+                                    {{ form_widget(permissionForm.name) }}
+                                </div>
+                            </div>
+
+                        </div><!-- /.box-body -->
+                        <div class="box-footer">
+                            {{ form_widget(permissionForm.submit) }}
+                        </div><!-- /.box-footer -->
+                    {{ form_end(permissionForm)}}
+
+                </div>
+
+
+            </div><!-- ./col -->
+        </div><!-- /.row -->
+
+    </section><!-- /.content -->
+{% endblock %}

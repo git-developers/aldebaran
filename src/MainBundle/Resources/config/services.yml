@@ -1,0 +1,120 @@
+#services:
+#    main.example:
+#        class: MainBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+parameters:
+
+services:
+    main.util.formBuilder:
+        class: MainBundle\Util\FormBuilder\FormBuilder
+        arguments: ["@service_container", "@templating"]
+        tags:
+            - { name: form.type, alias: main.util.formBuilder }
+
+    main.util.elementBuilder:
+        class: MainBundle\Util\ElementBuilder\ElementBuilder
+        arguments: ["@service_container", "@templating"]
+        tags:
+            - { name: form.type, alias: main.util.elementBuilder }
+
+    main.util.floorplanBuilder:
+        class: MainBundle\Util\FloorplanBuilder\FloorplanBuilder
+        arguments: ["@service_container", "@templating"]
+        tags:
+            - { name: form.type, alias: main.util.floorplanBuilder }
+
+    main.util.email:
+        class: MainBundle\Util\Email
+        arguments: ["@service_container", "@templating"]
+
+    main.form.usertype:
+        class: MainBundle\Form\UserType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.usertype }
+
+    main.form.profileType:
+        class: MainBundle\Form\ProfileType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.profileType }
+
+    main.form.gcmType:
+        class: MainBundle\Form\GcmType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.gcmType }
+
+    main.form.qrType:
+        class: MainBundle\Form\QrType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.qrType }
+
+    main.form.aboutType:
+        class: MainBundle\Form\AboutType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.aboutType }
+
+    main.form.filesType:
+        class: MainBundle\Form\FilesType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.filesType }
+
+    main.form.videoType:
+        class: MainBundle\Form\VideoType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.videoType }
+
+    main.form.formType:
+        class: MainBundle\Form\FormType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.formType }
+
+    main.form.eventType:
+        class: MainBundle\Form\EventType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.eventType }
+
+    main.form.elementType:
+        class: MainBundle\Form\ElementType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.elementType }
+
+    main.form.newsType:
+        class: MainBundle\Form\NewsType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.newsType }
+
+    main.form.floorPlanType:
+        class: MainBundle\Form\FloorPlanType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.floorPlanType }
+
+    main.form.configurationEmailType:
+        class: MainBundle\Form\ConfigurationEmailType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: main.form.configurationEmailType }

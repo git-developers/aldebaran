@@ -1,0 +1,9 @@
+frontend_video_index:
+    path: /
+    defaults: { _controller: FrontendBundle:Video:index }
+    methods: [GET]
+
+frontend_video_detail:
+    path: /detail
+    defaults: { _controller: FrontendBundle:Video:detail }
+    methods: [GET]

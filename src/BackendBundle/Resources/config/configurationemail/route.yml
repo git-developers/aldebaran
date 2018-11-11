@@ -1,0 +1,24 @@
+backend_configuration_email_index:
+    path: /
+    defaults: { _controller: BackendBundle:ConfigurationEmail:index }
+    methods: [GET]
+
+backend_configuration_email_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:ConfigurationEmail:list }
+    methods:   [GET]
+
+backend_configuration_email_create:
+    path: /create
+    defaults: { _controller: BackendBundle:ConfigurationEmail:create }
+    methods: [GET, POST]
+
+backend_configuration_email_edit:
+    path: /edit
+    defaults: { _controller: BackendBundle:ConfigurationEmail:edit }
+    methods: [GET, POST]
+
+backend_configuration_email_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:ConfigurationEmail:delete }
+    methods:   [GET, POST]

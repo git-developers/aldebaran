@@ -1,0 +1,15 @@
+
+#backend_default_login_validation:
+#    path: /login-validation
+#    defaults: { _controller: BackendBundle:Default:loginValidation }
+#    methods: [GET]
+
+backend_default_index:
+    path: /
+    defaults: { _controller: BackendBundle:Default:index }
+    methods: [GET]
+
+backend_default_test:
+    path: /test
+    defaults: { _controller: BackendBundle:Default:test }
+    methods: [GET]

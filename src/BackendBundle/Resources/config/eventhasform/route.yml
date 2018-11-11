@@ -1,0 +1,4 @@
+backend_eventhasform_remove_form:
+    path:  /remove-form
+    defaults: { _controller: BackendBundle:EventHasForm:removeForm }
+    methods:   [GET, POST]

@@ -1,0 +1,19 @@
+backend_gcm_index:
+    path: /
+    defaults: { _controller: BackendBundle:Gcm:index }
+    methods: [GET]
+
+backend_gcm_list:
+    path:  /list
+    defaults: { _controller: BackendBundle:Gcm:list }
+    methods:   [GET]
+
+backend_gcm_create:
+    path: /create
+    defaults: { _controller: BackendBundle:Gcm:create }
+    methods: [GET, POST]
+
+backend_gcm_delete:
+    path:  /delete
+    defaults: { _controller: BackendBundle:Gcm:delete }
+    methods:   [GET, POST]
